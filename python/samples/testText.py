@@ -13,19 +13,26 @@ class RunText(SampleBase):
         font = graphics.Font()
         font.LoadFont("../../fonts/10x20.bdf")
         textColor = graphics.Color(255, 255, 255)
-        pos = offscreenCanvas.width
-        myText = self.args["text"] # works like this:  < $ sudo ./runtext.py -c 2 -t "Soixante Circuits" > draws_ Soixi to screen, but why -t ?
-        # can be exchanged with string directly
+        posX = 0
+        posY = offscreenCanvas.height/2 + 5
+        myText = "8223%"
+        num = 98
 
         while True:
             offscreenCanvas.Clear()
-            len = graphics.DrawText(offscreenCanvas, font, pos, offscreenCanvas.height/2, textColor, myText)
-            pos -= 1
-            if (pos + len < 0):
-                pos = offscreenCanvas.width
+            
+            myText = str(num) + "%"
 
-            time.sleep(0.05)
+            # draw to see how long the text is and set posX accordingly, then .Clear() to not draw first posX
+            length = graphics.DrawText(offscreenCanvas, font, posX, posY, textColor, myText)
+            posX = offscreenCanvas.width/2 - length/2
+            offscreenCanvas.Clear()
+
+            graphics.DrawText(offscreenCanvas, font, posX, posY, textColor, myText)
             offscreenCanvas = self.matrix.SwapOnVSync(offscreenCanvas)
+
+            time.sleep(1) #position important ? maybe after swapOnSync
+            num += 1
 
 
 # Main function
